@@ -4,7 +4,7 @@ const PORT = 3000
 const app = express()
 
 app.get("/", (req, res) => {
-    res.send("Second Demo with Devfile on Nodejs!")
+    res.send("First Demo with Devfile on Nodejs!")
 })
 
 app.listen(PORT, () => {

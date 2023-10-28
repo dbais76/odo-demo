@@ -1,12 +1,17 @@
 commands:
-- apply:
-    component: component-built-from-dockerfile
-  id: build-image
-- apply:
-    component: deploy
-    group: 
+- id: deploy
+  composite:
+    commands:
+      - build-image
+      - deployk8s
+    group:
       isDefault: true
       kind: deploy    
+- apply:
+    component: build
+  id: build-image
+- apply:
+    component: deployk8s
   id: deployk8s
 
 components:
@@ -15,13 +20,13 @@ components:
     dockerfile:
       uri: ./Dockerfile
       buildContext: ${PROJECTS_ROOT}
-  name: component-built-from-dockerfile  
+  name: build
 - kubernetes:
     endpoints:
-      - name: port-8080
-        targetPort: 8080
+      - name: http-8081
+        targetPort: 8081
     uri: deploy/deploy.yaml      
-  name: deploy
+  name: deployk8s
 - container:
     args:
       - tail
